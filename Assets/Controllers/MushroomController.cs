@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MushroomController : MonoBehaviour
+public class MushroomController : EntityController
 {
-    public GameObject ShroomEffect, WeirdEffect;
-
     [SerializeField]
     private string type;
+
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
     }
 
     // Update is called once per frame
@@ -20,38 +20,10 @@ public class MushroomController : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
-        if (other.transform.name == "Player")
-        {
-            switch (type)
-            {
-                case "poison":
-                    other.GetComponent<PlayerController>().is_dead = true;
-                    ShroomEffect.SetActive(true);
-                    ShroomEffect.GetComponent<Text>().text = "That mushroom just killed you!";
-                    Destroy(this.gameObject);
-
-                    break;
-
-                case "psychedelic":
-                    StartCoroutine(psychedelicFun());
-                    break;
-                default:
-                    //random effect
-                    break;
-            }
-
-            Destroy(this.gameObject);
-
-
-        }
+        LevelControllerInstance.DoShroomEffect(type);
+        Destroy(this.gameObject);
     }
 
-    private IEnumerator psychedelicFun()
-    {
-        WeirdEffect.SetActive(true);
-        yield return new WaitForSeconds(10f);
-
-    }
 }

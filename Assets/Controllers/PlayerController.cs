@@ -14,40 +14,20 @@ public class PlayerController : EntityController
 
 
     private Animator WolfAnimator;
-
     [SerializeField]
     private bool is_running;
     [SerializeField]
-    private string LevelControllerName;
-
-    [SerializeField]
     private int hearts = 3;
 
-    private GameObject LevelControllerGO;
-    private LevelController LevelControllerInstance;
     
-
-
-
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
-        MovementSpeed     = 5f;
-        LevelControllerGO = GameObject.Find("LevelController");
+        base.Start();
 
-        switch (LevelControllerName)
-        {
-            case "TutorialController":
-                LevelControllerInstance = LevelControllerGO.GetComponent<TutorialController>();
-                break;
-
-            default:
-                LevelControllerInstance = LevelControllerGO.GetComponent<LevelController>();
-                break;
-        }
-
-        WolfAnimator = WolfSprite.GetComponent<Animator>();
-        rb = this.gameObject.GetComponent<Rigidbody>();
+        MovementSpeed = 5f;
+        WolfAnimator  = WolfSprite.GetComponent<Animator>();
+        rb            = this.gameObject.GetComponent<Rigidbody>();
 
         rb.isKinematic = false;
     }

@@ -13,8 +13,10 @@ public class DogController : EntityController
     private bool is_moving, is_running, patrol, alerted;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
+
         Player        = GameObject.Find("Player");
         anim          = GetComponent<Animation>();
         rb            = GetComponent<Rigidbody>();

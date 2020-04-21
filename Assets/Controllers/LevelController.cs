@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,12 +9,12 @@ public abstract class LevelController : MonoBehaviour
 {
 
     public int  SheepNumber;
-    public Text Dialog;
+    public TextMeshProUGUI Dialog;
     public Text SheepText;
     public int State;
     public int DetectedPlayerNumber;
+    public GameObject PlayerObject, Check, WeirdEffect;
 
-    public GameObject PlayerObject, Check;
     protected PlayerController Player;
 
     // Start is called before the first frame update
@@ -22,13 +23,32 @@ public abstract class LevelController : MonoBehaviour
         DetectedPlayerNumber = 0;
         Debug.Log(PlayerObject);
         Player = PlayerObject.GetComponent<PlayerController>();
-
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void DoShroomEffect(string type)
+    {
+        switch(type)
+        {
+            case "poison":
+                Player.is_dead = true;
+                StartCoroutine(
+                    ShowText(
+                        new string[1] { "That mushroom just killed you!" },
+                        new float[1] { 0 }
+                    )
+                );
+                break;
+
+            case "psychedelic":
+                StartCoroutine(DisplayWeirdEffect(10));
+                break;
+        }
     }
 
     protected virtual void StateAction() {}
@@ -57,6 +77,13 @@ public abstract class LevelController : MonoBehaviour
     public void ShowTextNow(string text)
     {
         StartCoroutine(ShowText(new string[1] { text }, new float[1] { 0 }));
+    }
+
+    protected IEnumerator DisplayWeirdEffect(int seconds)
+    {
+        WeirdEffect.SetActive(true);
+        yield return new WaitForSeconds(seconds);
+        WeirdEffect.SetActive(false);
     }
 
     protected IEnumerator ShowText(string[] texts, float[] delays, string exitAction = null, bool clear = true, float clearTime = 4f)

@@ -20,7 +20,7 @@ public class TutorialController : LevelController
         Player = PlayerObject.GetComponent<PlayerController>();
 
 
-        State = 0;
+        State = 1;
         StateAction();
     }
 
@@ -161,7 +161,7 @@ public class TutorialController : LevelController
         );
         yield return new WaitForSeconds(5f);
 
-        Player.target = new Vector3(36, PlayerObject.transform.position.y, 70);
+        Player.target = new Vector3(36.06f, PlayerObject.transform.position.y, 70);
         Player.move_to_target = true;
 
         yield return new WaitForSeconds(2f);

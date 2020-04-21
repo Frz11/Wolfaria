@@ -15,30 +15,14 @@ public class SheepController : EntityController
     private int walk_range = 10;
     [SerializeField]
     private bool is_running, is_moving;
-    [SerializeField]
-    private string LevelControllerName;
-    private GameObject LevelControllerGO;
-
-    private LevelController LevelControllerInstance;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
 
         Player            = GameObject.Find("Player");
-        LevelControllerGO = GameObject.Find("LevelController");
         MovementSpeed     = 4f;
-
-        switch (LevelControllerName)
-        {
-            case "TutorialController":
-                LevelControllerInstance = LevelControllerGO.GetComponent<TutorialController>();
-                break;
-
-            default:
-                LevelControllerInstance = LevelControllerGO.GetComponent<LevelController>();
-                break;
-        }
 
         is_running = false;
         anim       = GetComponent<Animation>();
@@ -83,7 +67,6 @@ public class SheepController : EntityController
                 if (hit.transform.name == "Player")
                 {
                     target = transform.position + (-transform.forward) * 12f;
-                    Debug.Log(target);
                     is_running = true;
 
                     LevelControllerInstance.DetectedPlayerNumber++;

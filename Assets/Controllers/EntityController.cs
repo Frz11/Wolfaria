@@ -9,12 +9,27 @@ public class EntityController : MonoBehaviour
     protected Quaternion deltaRotation;
     protected Rigidbody rb;
     protected float MovementSpeed;
+    protected GameObject LevelControllerGO;
+    protected LevelController LevelControllerInstance;
+    [SerializeField]
+    protected string LevelControllerName;
 
 
     // Use this for initialization
-    void Start()
+    protected void Start()
     {
+        LevelControllerGO = GameObject.Find("LevelController");
 
+        switch (LevelControllerName)
+        {
+            case "TutorialController":
+                LevelControllerInstance = LevelControllerGO.GetComponent<TutorialController>();
+                break;
+
+            default:
+                LevelControllerInstance = LevelControllerGO.GetComponent<LevelController>();
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -25,7 +40,7 @@ public class EntityController : MonoBehaviour
 
     public bool MoveToTarget()
     {
-        if (System.Math.Abs(transform.position.x - target.x) > 1 || System.Math.Abs(transform.position.z - target.z) > 1)
+        if (System.Math.Abs(transform.position.x - target.x) > 0.2f || System.Math.Abs(transform.position.z - target.z) > 0.2f)
         {
             this.CalculateRotation();
 
