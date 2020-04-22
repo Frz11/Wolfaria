@@ -1,15 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ContainerOpener : MonoBehaviour
+public class ContainerOpener : EntityController
 {
-    public bool IsOpened = true;
+    public bool IsOpened  = true;
+    public string message = "";
+    public GameObject NoteGO;
+
     private Animator animator;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
         animator = GetComponent<Animator>();
         
         if (IsOpened)
@@ -18,11 +23,31 @@ public class ContainerOpener : MonoBehaviour
         }
     }
 
-  
-    public void Open()
+    public void OnCollisionEnter(Collision collision)
     {
+        if (collision.collider.gameObject.name == "Player" && !IsOpened)
+        {
+            StartCoroutine(Open());
+        }
+    }
+
+    public IEnumerator Open()
+    {
+        LevelControllerInstance.BlockPlayer();
+        
         animator.SetBool("Opened", true);
-        IsOpened = true; 
+        IsOpened = true;
+
+        yield return new WaitForSeconds(
+            animator.GetCurrentAnimatorStateInfo(0).length
+        );
+
+        if (message != "")
+        {
+            NoteGO.GetComponent<NoteController>().ShowNote(message);
+        } else {
+            LevelControllerInstance.UnBlockPlayer();
+        }
     }
 
     public void Close()

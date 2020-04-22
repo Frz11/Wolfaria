@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public abstract class LevelController : MonoBehaviour
@@ -16,12 +17,12 @@ public abstract class LevelController : MonoBehaviour
     public GameObject PlayerObject, Check, WeirdEffect;
 
     protected PlayerController Player;
+    protected int LevelIndex;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         DetectedPlayerNumber = 0;
-        Debug.Log(PlayerObject);
         Player = PlayerObject.GetComponent<PlayerController>();
     }
 
@@ -31,7 +32,7 @@ public abstract class LevelController : MonoBehaviour
         
     }
 
-    public void DoShroomEffect(string type)
+    public void DoShroomEffect(string type, float duration = 10f)
     {
         switch(type)
         {
@@ -46,7 +47,7 @@ public abstract class LevelController : MonoBehaviour
                 break;
 
             case "psychedelic":
-                StartCoroutine(DisplayWeirdEffect(10));
+                StartCoroutine(DisplayWeirdEffect(duration));
                 break;
         }
     }
@@ -63,12 +64,12 @@ public abstract class LevelController : MonoBehaviour
         }
     }
 
-    protected void UnBlockPlayer()
+    public void UnBlockPlayer()
     {
         Player.Blocked = false;
     }
 
-    protected void BlockPlayer()
+    public void BlockPlayer()
     {
         Player.Blocked = true;
     }
@@ -79,7 +80,7 @@ public abstract class LevelController : MonoBehaviour
         StartCoroutine(ShowText(new string[1] { text }, new float[1] { 0 }));
     }
 
-    protected IEnumerator DisplayWeirdEffect(int seconds)
+    protected IEnumerator DisplayWeirdEffect(float seconds)
     {
         WeirdEffect.SetActive(true);
         yield return new WaitForSeconds(seconds);
@@ -114,5 +115,14 @@ public abstract class LevelController : MonoBehaviour
             Debug.LogError("Texts and delays have different lenghts in ShowText method.");
         }
     }
+
+    protected IEnumerator FinishLevel()
+    {
+        Check.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        PlayerPrefs.SetInt("CurrentLevel", LevelIndex + 1);
+        SceneManager.LoadScene("Menu");
+    }
+
 
 }

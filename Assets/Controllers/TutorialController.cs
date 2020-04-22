@@ -12,15 +12,15 @@ public class TutorialController : LevelController
     [SerializeField]
     private GameObject Human, Dog;
 
-    void Start()
+    new void Start()
     {
-        DetectedPlayerNumber = 0;
+        base.Start();
+
         SheepNumber = 4;
+        State       = 0;
+        LevelIndex  = 0;
+
         ShowSheeps();
-        Player = PlayerObject.GetComponent<PlayerController>();
-
-
-        State = 1;
         StateAction();
     }
 
@@ -165,11 +165,6 @@ public class TutorialController : LevelController
         Player.move_to_target = true;
 
         yield return new WaitForSeconds(2f);
-        Check.SetActive(true);
-
-        yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene("Menu");
-
-        
+        StartCoroutine(FinishLevel());
     }
 }

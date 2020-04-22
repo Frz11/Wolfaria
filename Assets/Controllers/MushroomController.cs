@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class MushroomController : EntityController
 {
+    public float duration = 10f;
     [SerializeField]
     private string type;
 
@@ -22,8 +23,11 @@ public class MushroomController : EntityController
 
     public void OnTriggerEnter(Collider other)
     {
-        LevelControllerInstance.DoShroomEffect(type);
-        Destroy(this.gameObject);
+        if (other.gameObject.name == "Player")
+        {
+            LevelControllerInstance.DoShroomEffect(type, duration);
+            Destroy(this.gameObject);
+        }
     }
 
 }

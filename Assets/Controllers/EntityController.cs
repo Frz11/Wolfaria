@@ -22,6 +22,9 @@ public class EntityController : MonoBehaviour
 
         switch (LevelControllerName)
         {
+            case "LevelOneController":
+                LevelControllerInstance = LevelControllerGO.GetComponent<LevelOneController>();
+                break;
             case "TutorialController":
                 LevelControllerInstance = LevelControllerGO.GetComponent<TutorialController>();
                 break;

@@ -25,11 +25,14 @@ public class PlayerController : EntityController
     {
         base.Start();
 
+        Debug.Log(WolfSprite);
         MovementSpeed = 5f;
         WolfAnimator  = WolfSprite.GetComponent<Animator>();
         rb            = this.gameObject.GetComponent<Rigidbody>();
 
         rb.isKinematic = false;
+
+        Debug.Log(WolfAnimator);
     }
 
     // Update is called once per frame
